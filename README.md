@@ -4,7 +4,7 @@ This repository contains a Python example of a microservice plugin for the Palle
 
 ## ⚙️ How it Works
 
-1.  **MQTT Connection**: The script connects to the PalletScan MQTT broker and subscribes to the `palletscan/pallets/new` topic.
+1.  **MQTT Connection**: The script connects to the PalletScan MQTT broker and subscribes to the `quality/pallets/new` topic.
 2.  **Receive Notification**: When a new pallet is scanned, the PalletScan system publishes a message to the topic with a `pallet_id`.
 3.  **Fetch Data**: Upon receiving a notification, the script makes a `GET` request to the PalletScan API (`/api/v1/pallets/{pallet_id}/data`) to download the full data package for the pallet.
 4.  **Process Data**: The script then simulates a custom analysis on the data. **This is where you would integrate your own machine learning model and processing logic.**
