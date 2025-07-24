@@ -11,11 +11,11 @@ MQTT_BROKER_HOST = os.environ.get("MQTT_BROKER_HOST", "mqtt-host")
 MQTT_BROKER_PORT = int(os.environ.get("MQTT_BROKER_PORT", 1883))
 MQTT_USERNAME = os.environ.get("MQTT_USERNAME", "your-username")
 MQTT_PASSWORD = os.environ.get("MQTT_PASSWORD", "your-password")
-MQTT_NEW_PALLET_TOPIC = "palletscan/pallets/new"
-MQTT_RESULTS_TOPIC_TEMPLATE = "palletscan/plugins/{plugin_id}/results"
+MQTT_NEW_PALLET_TOPIC = "quality/pallets/new"
+MQTT_RESULTS_TOPIC_TEMPLATE = "quality/plugins/{plugin_id}/results"
 
-PALLETSCAN_API_URL = os.environ.get("PALLETSCAN_API_URL", "https://east.arvistcloud.net/api/v1")
-PALLETSCAN_API_KEY = os.environ.get("PALLETSCAN_API_KEY", "your-api-key")
+QUALITY_API_URL = os.environ.get("QUALITY_API_URL", "https://east.arvistcloud.net/api/v1")
+QUALITY_API_KEY = os.environ.get("QUALITY_API_KEY", "your-api-key")
 PLUGIN_ID = os.environ.get("PLUGIN_ID", "your-plugin-id")
 
 # --- Logging Setup ---
@@ -28,9 +28,9 @@ def process_pallet_data(pallet_id: str):
     """
     logging.info(f"Processing pallet with ID: {pallet_id}")
 
-    # 1. Fetch data from PalletScan API
-    headers = {"X-API-Key": PALLETSCAN_API_KEY}
-    data_url = f"{PALLETSCAN_API_URL}/pallets/{pallet_id}/data"
+    # 1. Fetch data from quality API
+    headers = {"X-API-Key": QUALITY_API_KEY}
+    data_url = f"{QUALITY_API_URL}/pallets/{pallet_id}/data"
     
     try:
         response = requests.get(data_url, headers=headers)
@@ -58,10 +58,10 @@ def process_pallet_data(pallet_id: str):
     }
     logging.info("Analysis complete.")
 
-    # 3. Submit results back to PalletScan
+    # 3. Submit results back to quality
     # You can choose to submit via REST API for immediate feedback or MQTT for asynchronous processing.
     # Here, we'll use the REST API.
-    results_url = f"{PALLETSCAN_API_URL}/pallets/{pallet_id}/results"
+    results_url = f"{QUALITY_API_URL}/pallets/{pallet_id}/results"
     try:
         response = requests.post(results_url, headers=headers, json=analysis_results)
         response.raise_for_status()
